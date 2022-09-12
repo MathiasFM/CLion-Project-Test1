@@ -9,17 +9,19 @@ int randomNum(int lowerLimit, int upperLimit){
     return random;
 }
 
-char* computerPlay(){
+int computerPlay(){
     int computerValue;
 
     computerValue = randomNum(1, 100);
 
     if (computerValue <= 33) {
-        return "Rock";
+        return 1;
     } else if (computerValue <= 66) {
-        return "Scissor";
+        return 2;
+    } else if (computerValue <= 99) {
+        return 3;
     } else {
-        return "Paper";
+        return 0;
     }
 }
 
@@ -34,34 +36,48 @@ int userPlay(){
     } else if (!strcmp(userInput, "Scissor")) {
         return 3;
     } else {
-        return 4;
+        return 0;
     }
 }
 
 char* gameOutcome(){
-    char* computerOutput;
+    int computerOutput;
     int userOutput;
 
     userOutput = userPlay();
     computerOutput = computerPlay();
 
 
-    if (!strcmp(computerOutput, "Rock") == userOutput) {
-        return "\nComputer chose Rock";
-    } else if (!strcmp(computerOutput, "Paper")) {
-        return "\nComputer chose Paper";
-    } else if (!strcmp(computerOutput, "Scissor")) {
-        return "\nComputer chose Scissor";
+    if (computerOutput == userOutput) {
+        return "\nIt's a tie";
+    } else if (computerOutput == 1 && userOutput == 3) {
+        return "\nYou lose computer chose Rock";
+    } else if (computerOutput == 2 && userOutput == 1) {
+        return "\nYou lose computer chose Paper";
+    } else if (computerOutput == 3 && userOutput == 2) {
+    return "\nYou lose computer chose Scissor";
+    } else if (computerOutput == 1 && userOutput == 2) {
+        return "\nYou win computer chose Rock";
+    } else if (computerOutput == 2 && userOutput == 3) {
+        return "\nYou win computer chose Paper";
+    } else if (computerOutput == 3 && userOutput == 1) {
+        return "\nYou win computer chose Scissor";
     } else {
         return "NULL";
     }
 
 }
 
+int gamePlay() {
+    int i;
+
+
+}
+
 int main(void){
     printf("Hello World!\n");
     //printf(computerPlay());
-    printf("\nChoose rock, paper or scissor: ");
+    printf("\nChoose Rock, Paper or Scissor: ");
     //printf(userPlay());
     printf(gameOutcome());
 
