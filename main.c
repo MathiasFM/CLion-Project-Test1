@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
+#include <string.h>
 
 int randomNum(int lowerLimit, int upperLimit){
     srand(time(NULL));
@@ -14,30 +15,55 @@ char* computerPlay(){
     computerValue = randomNum(1, 100);
 
     if (computerValue <= 33) {
-        printf("Rock");
+        return "Rock";
     } else if (computerValue <= 66) {
-        printf("Scissor");
+        return "Scissor";
     } else {
-        printf("Paper");
+        return "Paper";
     }
-
-    return 0;
 }
 
-char* userPlay(){
+int userPlay(){
     char userInput[20];
 
     scanf("\n%s", userInput);
-    printf("You chose %s", userInput);
+    if (!strcmp(userInput, "Rock")) {
+        return 1;
+    } else if (!strcmp(userInput, "Paper")) {
+        return 2;
+    } else if (!strcmp(userInput, "Scissor")) {
+        return 3;
+    } else {
+        return 4;
+    }
+}
 
-    return 0;
+char* gameOutcome(){
+    char* computerOutput;
+    int userOutput;
+
+    userOutput = userPlay();
+    computerOutput = computerPlay();
+
+
+    if (!strcmp(computerOutput, "Rock") == userOutput) {
+        return "\nComputer chose Rock";
+    } else if (!strcmp(computerOutput, "Paper")) {
+        return "\nComputer chose Paper";
+    } else if (!strcmp(computerOutput, "Scissor")) {
+        return "\nComputer chose Scissor";
+    } else {
+        return "NULL";
+    }
+
 }
 
 int main(void){
     printf("Hello World!\n");
-    printf(computerPlay());
+    //printf(computerPlay());
     printf("\nChoose rock, paper or scissor: ");
-    printf("%s", userPlay());
+    //printf(userPlay());
+    printf(gameOutcome());
 
     return 0;
 }
