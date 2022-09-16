@@ -2,6 +2,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 int randomNum(int lowerLimit, int upperLimit){
     srand(time(NULL));
@@ -26,21 +27,33 @@ int computerPlay(){
 }
 
 int userPlay(){
-    char userInput[20];
-
+    char userInput[200];
+    printf("\n\nChoose Rock, Paper or Scissor: ");
     scanf("\n%s", userInput);
-    if (!strcmp(userInput, "Rock")) {
+
+    for (int i = 0; userInput[i]; i++) {
+        userInput[i] = tolower((unsigned char)userInput[i]);
+    }
+
+    if (!strcmp(userInput, "exit")) {
+        return 0;
+    } else if(strcmp(userInput, "rock") && strcmp(userInput, "paper") && strcmp(userInput, "scissor")) {
+        printf("Wrong input, try again!");
+        return userPlay();
+    }
+
+    if (!strcmp(userInput, "rock")) {
         return 1;
-    } else if (!strcmp(userInput, "Paper")) {
+    } else if (!strcmp(userInput, "paper")) {
         return 2;
-    } else if (!strcmp(userInput, "Scissor")) {
+    } else if (!strcmp(userInput, "scissor")) {
         return 3;
     } else {
         return 0;
     }
 }
 
-char* gameOutcome(){
+int gameOutcome(){
     int computerOutput;
     int userOutput;
 
@@ -49,37 +62,68 @@ char* gameOutcome(){
 
 
     if (computerOutput == userOutput) {
-        return "\nIt's a tie";
+        return 1; //Tie
     } else if (computerOutput == 1 && userOutput == 3) {
-        return "\nYou lose computer chose Rock";
+        return 2; //C chose R beats S
     } else if (computerOutput == 2 && userOutput == 1) {
-        return "\nYou lose computer chose Paper";
+        return 2; //C chose P beats R
     } else if (computerOutput == 3 && userOutput == 2) {
-    return "\nYou lose computer chose Scissor";
+        return 2; //C chose S beats P
     } else if (computerOutput == 1 && userOutput == 2) {
-        return "\nYou win computer chose Rock";
+        return 3; //C chose R lost to P
     } else if (computerOutput == 2 && userOutput == 3) {
-        return "\nYou win computer chose Paper";
+        return 3; //C chose P lost to S
     } else if (computerOutput == 3 && userOutput == 1) {
-        return "\nYou win computer chose Scissor";
+        return 3; //C chose S lost to R
     } else {
-        return "NULL";
+        return 0;
     }
 
 }
 
-int gamePlay() {
-    int i;
+char* gamePlay() {
+    int playerScore = 0, computerScore = 0, gameResult;
+
+    for (int i = 1; i < 50; i++) {
+        gameResult = gameOutcome();
+        if (playerScore == 4 || computerScore == 4) {
+            if (playerScore == 4){
+                printf("Round: %d", i);
+                printf("\nFinal score is: (P) %d - (C) %d", playerScore + 1, computerScore);
+                return "\nGame over! Player wins!";
+            } else {
+                printf("Round: %d", i);
+                printf("\nFinal score is: (P) %d - (C) %d", playerScore, computerScore + 1);
+                return "\nGame over! Computer wins!";
+            }
+        } else if (gameResult == 1) {
+            printf("Round: %d", i);
+            printf("\nIt's a tie! Score: (P) %d - (C) %d", playerScore, computerScore);
+        } else if (gameResult == 2) {
+            printf("Round: %d", i);
+            ++computerScore;
+            printf("\nComputer wins! Score: (P) %d - (C) %d", playerScore, computerScore);
+        } else if (gameResult == 3) {
+            printf("Round: %d", i);
+            ++playerScore;
+            printf("\nPlayer wins! Score: (P) %d - (C) %d", playerScore, computerScore);
+        } else {
+            return "You exited the game!";
+        }
+
+    }
+
+
 
 
 }
 
 int main(void){
-    printf("Hello World!\n");
+    printf("Welcome to the game!\n\nIf you wish to exit the game, type \"exit\"");
     //printf(computerPlay());
-    printf("\nChoose Rock, Paper or Scissor: ");
+
     //printf(userPlay());
-    printf(gameOutcome());
+    printf(gamePlay());
 
     return 0;
 }
