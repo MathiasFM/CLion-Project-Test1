@@ -113,9 +113,6 @@ char* gamePlay() {
 
     }
 
-
-
-
 }
 
 int main(void){
